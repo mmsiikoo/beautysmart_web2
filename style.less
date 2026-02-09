@@ -1,0 +1,578 @@
+//винесла кольори та шрифти
+@main-font: 'Inter', sans-serif;
+@hero-font: 'Montserrat', sans-serif;
+@cursive-font: 'MonteCarlo', cursive;
+
+@color-text: #333;
+@color-purple: #A97DA8; //хедер
+@color-bg-light: #F8F0F8; //фон карток
+@color-bg-banner: #D6C2E0; //фон банера
+@color-cursive: rgb(204, 168, 201); //колір слова Smart
+
+//скидання стилів
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: @main-font;
+    background-color: white;
+    color: @color-text;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+//хедер
+.menu {
+    display: flex;
+
+    //адаптивність для меню
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
+}
+
+.top-bar {
+    background-color: @color-purple;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 15%;
+
+    //для зображень всередині .top-bar
+    img {
+        height: 24px;
+        width: auto;
+        cursor: pointer;
+        transition: opacity 0.3s;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
+
+.user-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.logo-bar {
+    text-align: center;
+    padding: 15px 0;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    background-color: white;
+}
+
+//хіро секшн
+.hero {
+    position: relative;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10%;
+    padding-bottom: 90px;
+    overflow: hidden;
+
+    //шар 1. картинка на фоні
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('img/face1.png');
+        background-size: cover;
+        background-position: center 20%;
+        z-index: -2; //на задній план
+    }
+
+    //шар 2. блюр зверху (маскою)
+    &::after {
+        content: '';
+        position: absolute;
+        top: -20px; //відтягування вгору за межі блоку
+        bottom: -20px; //відтягування вниз за межі блоку
+        left: -20px; //відтягування вліво
+        right: -20px;
+        //width: 100%;
+        //height: 100%;
+        background-image: url('img/face1.png');
+        background-size: cover;
+        background-position: center 20%;
+        filter: blur(15px); //розмиття
+        z-index: -1;
+
+        //маска, де зліва без блюру, а зправа є блюр
+        -webkit-mask-image: linear-gradient(to right, transparent 5%, black 60%);
+        mask-image: linear-gradient(to right, transparent 5%, black 60%);
+    }
+
+    h1 {
+        font-size: 95px;
+        line-height: 1;
+        margin-bottom: 20px;
+        font-family: @hero-font;
+        font-weight: 700;
+        color: white;
+        position: relative;
+        z-index: 2;
+        text-align: right; //вирівнювання по правому краю
+        //тінь для тексту
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+        display: inline-block;
+        right: 50px;
+    }
+
+    .cursive {
+        font-family: @cursive-font;
+        font-weight: 400;
+        color: @color-cursive;
+        font-size: 300px;
+        position: absolute;
+        top: -40px;
+        right: 30px;
+        z-index: -3;
+        line-height: 1;
+        white-space: nowrap; //щоб слово не переносилось
+    }
+}
+
+//продукти
+.products-section {
+    padding: 60px 20px;
+    text-align: center;
+
+    h2 {
+        margin-bottom: 60px; //відступ вниз до карток
+        font-size: 32px;
+        font-weight: 500;
+        color: #000;
+
+        //для блюру за заголовком
+        position: relative; //прив'язка до тексту
+        z-index: 1; //текст поверх блюру
+        display: inline-block; //блок блюру займає місце тільки по ширині тексту
+
+        &::before {
+            content: '';
+            position: absolute; //позиціонування відносно h2
+
+            //центрування блюру рівно посередині тексту
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            //розміри блюру
+            width: 130%;
+            height: 150%;
+            background: #826D80;
+            opacity: 0.17;
+            filter: blur(25px);
+            border-radius: 50%; //овал блюру
+            z-index: -1; //блюр під текст
+            pointer-events: none; //для того, щоб блюр не заважав мишці
+        }
+    }
+}
+
+
+.products-container {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    background: @color-bg-light;
+    padding: 40px 20px;
+    border-radius: 40px;
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    img {
+        height: 180px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+        margin-bottom: 30px;
+    }
+
+    h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+        height: auto;
+        min-height: 40px; //мінімум 2 рядки
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    .price {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 25px;
+        margin-top: 10px;
+    }
+
+    .btn-black {
+        background: black;
+        color: white;
+        border: none;
+        padding: 12px 60px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+        letter-spacing: 1px;
+
+        &:hover {
+            background: #333;
+        }
+    }
+}
+
+//промо банер
+.promo-banner {
+    display: flex;
+    background: @color-bg-banner;
+    // height: 450px;
+    align-items: center; //центрування по вертикалі
+
+    .banner-image {
+        flex: 1; //50% ширини
+        height: 100%; //на всю висоту банера
+        min-height: 450px; //щоб картинка не була надто низькою
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    }
+
+    .banner-text {
+        flex: 1; // 50% ширини
+        display: flex;
+        justify-content: center; //центрування скляного блоку
+        align-items: center;
+        padding: 20px; //відступ, щоб блок не був близько до країв екрану
+        min-width: 0;
+    }
+}
+
+.glass-effect {
+    width: 100%;
+    max-width: 643px;
+    min-height: 259px;
+
+    //центрування тексту всередині блоку
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 30px;
+    backdrop-filter: blur(15px); //блюр 
+
+    //відступи
+    padding: 0 20px;
+
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        font-size: clamp(16px, 2.5vw, 24px);
+        line-height: 2.5;
+        letter-spacing: 0.06em;
+
+        font-style: normal;
+        text-transform: uppercase; //всі букви капсом
+        text-align: center;
+        color: #000;
+        margin: 0; //прибираю зайві відступи браузера
+
+        //перенесення тексту
+        white-space: normal;
+
+        @media (max-width: 1200px) {
+            white-space: normal;
+        }
+    }
+}
+
+//футер
+.footer {
+    position: relative;
+    height: 520px; //висота секції футера
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    //фон (виноград)
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('img/grape.png');
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px; //відстань між блоком контактів і кнопками
+    }
+
+    .contact-box {
+        //розміри самого блоку контактів
+        //width: 437px;
+        height: 207px;
+        width: 100%;
+        max-width: 537px;
+
+        //центрування через Flexbox
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        //ефект скла
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px); //блюр фону
+        border-radius: 30px;
+        color: white;
+
+
+        //текст
+        font-family: 'Inter', sans-serif;
+        font-size: clamp(24px, 4vw, 36px);
+        font-style: italic;
+        font-weight: 500;
+        color: #000;
+        letter-spacing: 1px;
+    }
+
+    .social-box {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .social-link {
+        //width: 443px;
+        height: 90px;
+        width: 100%;
+        max-width: 543px;
+
+        //відступи всередині 
+        padding: 32px 47px;
+
+
+        //стиль кнопки
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+        border-radius: 70px;
+        text-decoration: none;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px; //відстань між іконкою і текстом
+
+        transition: transform 0.2s, background 0.3s;
+
+        //текст всередині
+        font-family: 'Inter', sans-serif;
+        font-size: 24px;
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: 1px;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        img {
+            //іконки
+            width: 40px;
+            height: 40px;
+        }
+    }
+}
+
+//адаптивна верстка під мобільну версію
+@media (max-width: 768px) {
+
+    //хедер та логобар
+    .top-bar {
+        padding: 15px 20px; 
+    }
+
+    .logo-bar {
+        font-size: 14px;
+        padding: 10px 10px;
+    }
+
+    //хіро секшн
+    .hero {
+        height: 500px;
+        padding-right: 0; //відступ зправа, центрування всього
+        justify-content: center; //центрування контенту по горизонталі
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        //слово BEAUTY
+        h1 {
+            text-align: right; 
+            right: -30%; 
+            font-size: 50px; 
+            width: 100%; 
+            line-height: 1;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+
+        }
+
+        //слово Smart
+        .cursive {
+            font-size: 160px; 
+            right: auto; 
+            transform: translateX(-50%); 
+            position: absolute;
+            top: -25px;
+            left: 30px;
+            z-index: -3;
+            line-height: -3
+        }
+
+    }
+
+    //продукти
+    .products-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px; //відстань між картками
+    }
+
+    .product-card {
+        width: 270px;
+        max-width: 270px;
+        padding: 30px 20px;
+    }
+
+    //промо банер 
+    .promo-banner {
+        display: block; 
+        position: relative; 
+        height: 500px; 
+
+        .banner-image {
+           width: 100%;
+            height: 100%; 
+            position: absolute; 
+            top: 0;
+            left: 0;
+            z-index: 1;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; 
+            }
+        }
+
+        .banner-text {
+            width: 100%;
+            height: 100%; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .glass-effect {
+            min-height: auto; 
+            padding: 40px 20px;
+            
+            h2 {
+                font-size: 20px; 
+                line-height: 1.5;
+            }
+        }
+    }
+
+    //футер
+    .footer {
+        height: auto; 
+        padding: 50px 0;
+
+        &::before {
+            background-position: left center; 
+        }
+
+        .footer-content {
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .contact-box {
+            width: 100%;
+            max-width: 100%; 
+            height: auto; 
+            padding: 30px;
+            font-size: 24px; 
+            margin-bottom: 20px;
+        }
+
+        .social-box {
+            width: 100%;
+        }
+
+        .social-link {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            padding: 15px 20px;
+            font-size: 18px;
+            border-radius: 50px;
+            justify-content: center; 
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}
